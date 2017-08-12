@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class JsonParserTab implements ITab {
+public class JsonParserTab extends java.awt.Component implements ITab {
 
     JTabbedPane tabbedPane;
     private final IBurpExtenderCallbacks callbacks;
@@ -36,7 +36,7 @@ public class JsonParserTab implements ITab {
 
     @Override
     public String getTabCaption() {
-        return "JSON Path ParserTab";
+        return "JSON";
     }
 
     @Override

@@ -20,6 +20,7 @@ public class BurpExtender extends BaseExtender implements IBurpExtender, IMessag
         extensionName = EXTENSION_NAME;
 
         parserTab = new JsonParserTab(callbacks);
+        callbacks.customizeUiComponent(parserTab);
 
         callbacks.registerContextMenuFactory(new Menu(callbacks, parserTab));
 
@@ -43,8 +44,4 @@ public class BurpExtender extends BaseExtender implements IBurpExtender, IMessag
         return parserTab;
     }
 
-    public IBurpExtenderCallbacks getCallbacks() {
-        return callbacks;
-    }
-    
 }
