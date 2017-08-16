@@ -13,6 +13,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
+import java.util.Set;
+import javax.swing.ListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -31,6 +35,19 @@ public class JsonPathPanel extends javax.swing.JPanel {
         context = JsonPath.parse(json);
         initComponents();
         BurpExtender.getCallbacks().customizeUiComponent(this);
+        
+        //add a listener to the domains list
+        resultList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent evt) {
+                String selected = resultList.getSelectedValue();
+                if (selected == null) {
+                    copyButton.setText("Copy All");
+                } else {
+                    copyButton.setText("Copy Selection");
+                }
+            }
+        });
     }
 
     /**
@@ -76,7 +93,7 @@ public class JsonPathPanel extends javax.swing.JPanel {
 
         jScrollPane2.setViewportView(resultList);
 
-        copyButton.setText("Copy Selection");
+        copyButton.setText("Copy All");
         copyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyButtonActionPerformed(evt);
@@ -89,7 +106,7 @@ public class JsonPathPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(copyButton)
-                .addGap(0, 504, Short.MAX_VALUE))
+                .addGap(0, 544, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
         );
@@ -149,9 +166,19 @@ public class JsonPathPanel extends javax.swing.JPanel {
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
         StringBuilder clip = new StringBuilder();
-        for (Object o : resultList.getSelectedValues()) {
-            String value = o.toString();
-            clip.append(value).append("\n");
+        
+        if (resultList.getSelectedIndex() > 0) {
+            for (Object o : resultList.getSelectedValuesList()) {
+                String value = o.toString();
+                clip.append(value).append("\n");
+            }
+        } else {
+            //select all 
+            ListModel selected = resultList.getModel();
+            for (int i = 0; i < selected.getSize(); i++) {
+                String value = (String)selected.getElementAt(i);
+                clip.append(value).append("\n");
+            }
         }
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(new StringSelection(clip.toString()), null);

@@ -107,7 +107,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="copyButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="504" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="544" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane2" alignment="0" pref="641" max="32767" attributes="0"/>
@@ -152,7 +152,7 @@
             </Container>
             <Component class="javax.swing.JButton" name="copyButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Copy Selection"/>
+                <Property name="text" type="java.lang.String" value="Copy All"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyButtonActionPerformed"/>
