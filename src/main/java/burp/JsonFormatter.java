@@ -24,27 +24,27 @@ public class JsonFormatter {
     private ArrayDeque<String> tempPath = new ArrayDeque<>();
     private int depth = 0;
 
-    
     public JsonFormatter(String json) {
         this.json = json;
         this.formattedJson = parse(json);
     }
 
     class PathTuple {
+
         String line;
         String path;
-        
+
         public PathTuple(String line, String path) {
             this.line = line;
             this.path = path;
         }
-        
+
         @Override
         public String toString() {
             return line;
         }
     }
-    
+
     public String prettyPrint() {
         return formattedJson;
     }
@@ -52,7 +52,7 @@ public class JsonFormatter {
     public List<PathTuple> getLines() {
         return lines;
     }
-    
+
     private void indent() {
         System.out.println("indent");
         ++depth;
@@ -66,13 +66,15 @@ public class JsonFormatter {
     }
 
     private void appendIndent(StringBuilder sb, int count) {
-        for (int i = 0; i < count; i++) sb.append(INDENT);
+        for (int i = 0; i < count; i++) {
+            sb.append(INDENT);
+        }
     }
-    
+
     private void newLine(StringBuilder sb, StringBuilder currLine) {
         //add to pretty print output
         sb.append(currLine).append(NEW_LINE);
-        
+
         //does this line have an identifier? 
         String line = currLine.toString();
         String[] parts = line.split(":", 2);
@@ -89,15 +91,17 @@ public class JsonFormatter {
         } else if (line.contains("[")) {
             //we've started an array
             pathReplace("[*]");
-        } 
+        }
         lines.add(path);
         currLine.setLength(0);
     }
-    
+
     private void pathReplace(String newValue) {
         System.out.println("pathReplace: " + newValue);
-        if (tempPath.size() > 0) tempPath.pop();
-        
+        if (tempPath.size() > 0) {
+            tempPath.pop();
+        }
+
         tempPath.push(newValue);
     }
 
@@ -108,20 +112,22 @@ public class JsonFormatter {
         while (i.hasNext()) { // (String element : ) {
             String next = i.next();
             System.out.println("next: " + next);
-            if (!next.startsWith("[") && !"".equals(next)) output.append(".");
+            if (!next.startsWith("[") && !"".equals(next)) {
+                output.append(".");
+            }
             output.append(next);
         }
         System.out.println("getPath: " + output.toString());
         return output.toString();
     }
-    
+
     private String stripQuotes(String input) {
         String output = input.trim();
         output = output.replace("\"", "");
         output = output.replace("'", "");
         return output;
     }
-    
+
     private String parse(String input) {
 
         input = input.replaceAll("[\\r\\n]", "");
@@ -206,9 +212,9 @@ public class JsonFormatter {
             }
         }
         //get the last bits
-        output.append(currLine); 
+        output.append(currLine);
         lines.add(new PathTuple(currLine.toString(), null));
-        
+
         return output.toString();
     }
 }
