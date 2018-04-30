@@ -9,14 +9,19 @@
         <dependency>
             <groupId>com.codemagi</groupId>
             <artifactId>burp-suite-utils</artifactId>
-            <version>1.0.8</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <version>2.1.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>LATEST</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -190,7 +190,7 @@ public class JsonPathPanel extends javax.swing.JPanel {
         String jsonPathText = jsonPathEntry.getText();
         
         try {
-            JsonPath path = JsonPath.compile(jsonPathText, null);
+            JsonPath path = JsonPath.compile(jsonPathText);
             BurpExtender.getInstance().getCallbacks().printOutput(path.toString());
         } catch (Exception e) {
             BurpExtender.getInstance().printStackTrace(e);
@@ -217,6 +217,10 @@ public class JsonPathPanel extends javax.swing.JPanel {
             resultList.setModel(listModel);
         }
         
+    }
+    
+    public void setJsonPathEntry(String path) {
+        jsonPathEntry.setText(path);
     }
     
     public void setStatusMessage(String message) {

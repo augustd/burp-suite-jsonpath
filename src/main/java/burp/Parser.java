@@ -2,7 +2,7 @@ package burp;
 
 import com.codemagi.burp.Utils;
 import com.codemagi.burp.parser.HttpRequest;
-import com.jayway.jsonpath.internal.JsonFormatter;
+//import com.jayway.jsonpath.internal.JsonFormatter;
 
 import javax.swing.*;
 import java.net.URL;
@@ -57,11 +57,12 @@ public class Parser {
 			callbacks.printOutput("RESPONSE BODY ----- \n" + responseBody);
             
             //parse the JSON
-            String prettyJson = JsonFormatter.prettyPrint(responseBody);
-            callbacks.printOutput(prettyJson);
+            JsonFormatter formatter = new JsonFormatter(responseBody);
+            //String prettyJson = JsonFormatter.prettyPrint(responseBody);
+            //callbacks.printOutput(prettyJson);
             
 			//initialize the GUI tab to display the results
-            JsonEntry entry = new JsonEntry(requestPath, response, "JSON", "JSON", requestResponse, prettyJson);
+            JsonEntry entry = new JsonEntry(requestPath, response, "JSON", "JSON", requestResponse, formatter);
 			JsonTab jsonTab = tab.createTab(requestPath, entry);
 /*
 			//create the subtabs
