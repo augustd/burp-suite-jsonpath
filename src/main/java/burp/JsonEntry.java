@@ -8,14 +8,16 @@ public class JsonEntry {
     final IHttpRequestResponse requestResponse;
     final String endpoints;
     final String json;
+    final JsonFormatter formatter;
 
-    JsonEntry(String bindingName, byte[] request, String operationName, String endpoints, IHttpRequestResponse requestResponse, String json) {
+    JsonEntry(String bindingName, byte[] request, String operationName, String endpoints, IHttpRequestResponse requestResponse, JsonFormatter formatter) {
         this.path = bindingName;
         this.request = request;
         this.operationName = operationName;
         this.endpoints = endpoints;
         this.requestResponse = requestResponse;
-        this.json = json;
+        this.formatter = formatter;
+        this.json = formatter.prettyPrint();
     }
 
 }

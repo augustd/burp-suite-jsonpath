@@ -26,7 +26,7 @@ public class JsonPathPanel extends javax.swing.JPanel {
 
     private String json;
     private DocumentContext context;
-    
+
     /**
      * Creates new form JsonPathPanel
      */
@@ -35,7 +35,7 @@ public class JsonPathPanel extends javax.swing.JPanel {
         context = JsonPath.parse(json);
         initComponents();
         BurpExtender.getCallbacks().customizeUiComponent(this);
-        
+
         //add a listener to the domains list
         resultList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -159,14 +159,14 @@ public class JsonPathPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jsonPathEntryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jsonPathEntryKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             evaluatePath();
         }
     }//GEN-LAST:event_jsonPathEntryKeyPressed
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
         StringBuilder clip = new StringBuilder();
-        
+
         if (resultList.getSelectedIndex() > 0) {
             for (Object o : resultList.getSelectedValuesList()) {
                 String value = o.toString();
@@ -182,59 +182,66 @@ public class JsonPathPanel extends javax.swing.JPanel {
         }
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(new StringSelection(clip.toString()), null);
-        
+
         setStatusMessage("Selection copied");
     }//GEN-LAST:event_copyButtonActionPerformed
 
     public void evaluatePath() {
         String jsonPathText = jsonPathEntry.getText();
-        
+
         try {
-            JsonPath path = JsonPath.compile(jsonPathText, null);
+            JsonPath path = JsonPath.compile(jsonPathText);
             BurpExtender.getInstance().getCallbacks().printOutput(path.toString());
         } catch (Exception e) {
             BurpExtender.getInstance().printStackTrace(e);
-            
-            String message = e.getMessage(); 
-            if ("java.lang.NullPointerException".equals(message)) message = "Invalid path";
+
+            String message = e.getMessage();
+            if ("java.lang.NullPointerException".equals(message)) {
+                message = "Invalid path";
+            }
             setStatusMessage(message);
         }
-                    
+
         //eval the JSON path
         Object results = JsonPath.parse(json).read(jsonPathText);
 
         //show the pretty print results (as JSON)
         resultArea.setText(JsonFormatter.prettyPrint(results.toString()));
-        
+
         //show the results as a list
         if (results instanceof List) {
             DefaultListModel listModel = new DefaultListModel();
-            for (Object result : (List)results) {
+            for (Object result : (List) results) {
                 BurpExtender.getInstance().getCallbacks().printOutput(noNulls(result));
                 listModel.addElement(noNulls(result));
             }
             resultList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             resultList.setModel(listModel);
         }
-        
+
     }
-    
+
+    public void setJsonPathEntry(String path) {
+        jsonPathEntry.setText(path);
+    }
+
     public void setStatusMessage(String message) {
         //update the UI
         statusMessage.setText(message);
-        
+
         //hide the status message after a delay
         Timer timer = new Timer();
         timer.schedule(new CloseDialogTask(), 1500);
     }
-    
+
     class CloseDialogTask extends TimerTask {
+
         @Override
         public void run() {
             statusMessage.setText("Enter JSONPath");
         }
     }
-    
+
     /**
      * Converts null Objects to empty String ("").
      *
@@ -243,11 +250,11 @@ public class JsonPathPanel extends javax.swing.JPanel {
      * otherwise
      */
     public static String noNulls(Object input) {
-	if (input == null) {
-	    return "null";
-	}
+        if (input == null) {
+            return "null";
+        }
 
-	return input.toString();
+        return input.toString();
     }
 
 

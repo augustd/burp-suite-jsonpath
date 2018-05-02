@@ -16,7 +16,7 @@ public class JsonSchemaTab implements IMessageEditorTab {
         txtInput = callbacks.createTextEditor();
         txtInput.setEditable(false);
     }
-    
+
     @Override
     public String getTabCaption() {
         return "JSON";
@@ -30,7 +30,7 @@ public class JsonSchemaTab implements IMessageEditorTab {
     @Override
     public boolean isEnabled(byte[] content, boolean isRequest) {
         BurpExtender extender = BurpExtender.getInstance();
-        
+
         return isRequest && extender.getParserTab().isJsonMessage(content);
     }
 
@@ -38,11 +38,11 @@ public class JsonSchemaTab implements IMessageEditorTab {
     public void setMessage(byte[] content, boolean isRequest) {
         //save the message
         currentMessage = content;
-        
+
         //set the JSON definition into the text area
         BurpExtender extender = BurpExtender.getInstance();
         String json = extender.getParserTab().getJsonString(content);
-        
+
         txtInput.setText(json.getBytes());
     }
 
@@ -60,5 +60,5 @@ public class JsonSchemaTab implements IMessageEditorTab {
     public byte[] getSelectedData() {
         return txtInput.getSelectedText();
     }
-    
+
 }
