@@ -42,14 +42,8 @@ public class JsonTab extends AbstractTableModel implements IMessageEditorControl
         JList<JsonFormatter.PathTuple> jsonList = new JList<>(listModel);
         jsonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jsonList.setLayoutOrientation(JList.VERTICAL);
-        jsonList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                JsonFormatter.PathTuple selectedValue = jsonList.getSelectedValue();
-                System.out.println("Selected: " + selectedValue);
-                jsonPathPanel.setJsonPathEntry(selectedValue.path);
-            }
-        });
+        jsonList.addListSelectionListener(new JsonListSelectionListener(jsonList, jsonPathPanel)); 
+
         JScrollPane jsonPane = new JScrollPane(jsonList);
 
         //create the main left/right pane 
@@ -60,6 +54,24 @@ public class JsonTab extends AbstractTableModel implements IMessageEditorControl
         tabbedPane.add(request, splitPane);
         tabbedPane.setTabComponentAt(JsonParserTab.tabCount - JsonParserTab.removedTabCount, new ButtonTabComponent(tabbedPane));
 
+    }
+    
+    class JsonListSelectionListener implements ListSelectionListener {
+
+        private final JList<JsonFormatter.PathTuple> jsonList;
+        private final JsonPathPanel jsonPathPanel;
+        
+        public JsonListSelectionListener(JList<JsonFormatter.PathTuple> jsonList, JsonPathPanel jsonPathPanel) {
+            this.jsonList = jsonList;
+            this.jsonPathPanel = jsonPathPanel;
+        }
+        
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            JsonFormatter.PathTuple selectedValue = jsonList.getSelectedValue();
+            System.out.println("Selected: " + selectedValue);
+            jsonPathPanel.setJsonPathEntry(selectedValue.path);
+        }
     }
 
     public final void addEntry(JsonEntry entry) {
