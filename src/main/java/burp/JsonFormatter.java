@@ -4,8 +4,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
+/**
+ * Formats compressed JSON into pretty-print and stores it into a <tt>List</tt> of individual lines which can be used to populate the clickable UI.
+ * 
+ * @author August Detlefsen, based on com.jayway.jsonpath.internal.JsonFormatter
+ */
 public class JsonFormatter {
 
     private static final String INDENT = "   ";
@@ -18,14 +22,12 @@ public class JsonFormatter {
     private static final int MODE_ESCAPE_DOUBLE = 103;
     private static final int MODE_BETWEEN = 104;
 
-    private String json;
-    private String formattedJson;
-    private List<PathTuple> lines = new ArrayList<>();
-    private ArrayDeque<String> tempPath = new ArrayDeque<>();
+    private final String formattedJson;
+    private final List<PathTuple> lines = new ArrayList<>();
+    private final ArrayDeque<String> tempPath = new ArrayDeque<>();
     private int depth = 0;
 
     public JsonFormatter(String json) {
-        this.json = json;
         this.formattedJson = parse(json);
     }
 

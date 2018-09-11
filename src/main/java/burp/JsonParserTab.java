@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+/**
+ * The top level UI tab for the extension. Appears on the same row with Proxy, 
+ * Repeater, etc and contains the individual parsed JSON tabs. 
+ * 
+ * @author August Detlefsen
+ */
 public class JsonParserTab extends java.awt.Component implements ITab {
 
     JTabbedPane tabbedPane;
@@ -25,7 +31,7 @@ public class JsonParserTab extends java.awt.Component implements ITab {
 
     public JsonTab createTab(String request, JsonEntry entry) {
 
-        JsonTab jsonTab = new JsonTab(callbacks, tabbedPane, request, entry);
+        JsonTab jsonTab = new JsonTab(tabbedPane, request, entry);
         tabbedPane.setSelectedIndex(tabCount - removedTabCount);
         tabCount++;
 

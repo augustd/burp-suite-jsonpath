@@ -9,12 +9,11 @@ import java.util.Timer;
 
 public class Menu implements IContextMenuFactory {
 
-    private IExtensionHelpers helpers;
-    private IBurpExtenderCallbacks callbacks;
+    private final IExtensionHelpers helpers;
+    private final IBurpExtenderCallbacks callbacks;
     private IContextMenuInvocation invocation;
-    private IHttpRequestResponse[] requestResponse;
 
-    private JsonParserTab parserTab;
+    private final JsonParserTab parserTab;
     public static Timer timer;
 
     public Menu(IBurpExtenderCallbacks callbacks, JsonParserTab parserTab) {
@@ -32,7 +31,7 @@ public class Menu implements IContextMenuFactory {
         //get information from the invocation
         IHttpRequestResponse[] ihrrs = invocation.getSelectedMessages();
 
-        JMenuItem item = new JMenuItem("Parse JSON");
+        JMenuItem item = new JMenuItem("Explore JSON");
         item.addActionListener(new MenuItemListener(ihrrs));
 
         List<JMenuItem> list = new ArrayList<>();
@@ -43,7 +42,7 @@ public class Menu implements IContextMenuFactory {
 
     class MenuItemListener implements ActionListener {
 
-        //private IHttpRequestResponse[] requestResponse;
+        private final IHttpRequestResponse[] requestResponse;
         public MenuItemListener(IHttpRequestResponse[] ihrrs) {
             requestResponse = ihrrs;
         }

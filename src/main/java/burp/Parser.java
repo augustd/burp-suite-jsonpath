@@ -1,23 +1,21 @@
 package burp;
 
 import com.codemagi.burp.Utils;
-import com.codemagi.burp.parser.HttpRequest;
-//import com.jayway.jsonpath.internal.JsonFormatter;
 
 import javax.swing.*;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Parses JSON response and creates JSONTab. 
+ * 
+ * @author August Detlefsen
+ */
 public class Parser {
 
     public static IExtensionHelpers helpers;
     public static IBurpExtenderCallbacks callbacks;
-    public static IHttpRequestResponse httpRequestResponse;
     public static List<String> headers;
-    //contains the (HashMap) structure of our built models
-    private final Map<String, Map<String, Object>> hashModels = new HashMap<>();
     private final JsonParserTab tab;
 
     public Parser(IBurpExtenderCallbacks callbacks, IExtensionHelpers helpers, JsonParserTab tab) {
@@ -26,11 +24,11 @@ public class Parser {
         this.tab = tab;
     }
 
-    public int parseSwagger(IHttpRequestResponse requestResponse, IBurpExtenderCallbacks callbacks) {
+    public int parseJson(IHttpRequestResponse requestResponse, IBurpExtenderCallbacks callbacks) {
         callbacks.printOutput("parseJson");
-        httpRequestResponse = requestResponse;
         byte[] response = requestResponse.getResponse();
 
+        //make sure we have a response to parse. If not, issue request again. 
         if (response == null) {
             IHttpRequestResponse request = callbacks.makeHttpRequest(requestResponse.getHttpService(), requestResponse.getRequest());
             response = request.getResponse();
@@ -61,7 +59,7 @@ public class Parser {
 
             //initialize the GUI tab to display the results
             JsonEntry entry = new JsonEntry(requestPath, response, "JSON", "JSON", requestResponse, formatter);
-            JsonTab jsonTab = tab.createTab(requestPath, entry);
+            tab.createTab(requestPath, entry);
 
         } catch (Exception e) {
             BurpExtender.getInstance().printStackTrace(e);

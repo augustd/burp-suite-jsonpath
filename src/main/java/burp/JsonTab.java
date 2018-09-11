@@ -7,29 +7,22 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
-public class JsonTab extends AbstractTableModel implements IMessageEditorController {
-
-    private String prettyJson;
+/**
+ * Individual JSON tab, representing a single JsonEntry. Contains the pretty
+ * print JSON and JSONPath search results.
+ * 
+ * @author August Detlefsen
+ */
+public class JsonTab implements IMessageEditorController {
 
     private final List<JsonEntry> entries = new ArrayList<>();
-    private IMessageEditor requestViewer;
     private IHttpRequestResponse currentlyDisplayedItem;
     JSplitPane splitPane;
     JTabbedPane tabbedPane;
 
-    private final IBurpExtenderCallbacks callbacks;
-
-    public JsonTab(final IBurpExtenderCallbacks callbacks, JTabbedPane tabbedPane, String request, JsonEntry entry) {
-        this.callbacks = callbacks;
+    public JsonTab(JTabbedPane tabbedPane, String request, JsonEntry entry) {
         this.tabbedPane = tabbedPane;
-        addEntry(entry);
-
-        JTabbedPane tabs = new JTabbedPane();
-        requestViewer = callbacks.createMessageEditor(this, false);
-        tabs.addTab("Response", requestViewer.getComponent());
 
         //the right hand side displays the JSON Path panel
         JsonPathPanel jsonPathPanel = new JsonPathPanel(entry.json);
@@ -78,7 +71,7 @@ public class JsonTab extends AbstractTableModel implements IMessageEditorControl
         synchronized (entries) {
             int row = entries.size();
             entries.add(entry);
-            fireTableRowsInserted(row, row);
+            //fireTableRowsInserted(row, row);
             UIManager.put("tabbedPane.selected",
                     new javax.swing.plaf.ColorUIResource(Color.RED));
         }
@@ -105,57 +98,6 @@ public class JsonTab extends AbstractTableModel implements IMessageEditorControl
     }
 
     @Override
-    public int getRowCount() {
-        return entries.size();
-    }
-
-    @Override
-    public int getColumnCount() {
-        return 3;
-    }
-
-    @Override
-    public String getColumnName(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return "Operation";
-            case 1:
-                return "Path";
-            case 2:
-                return "Description";
-            default:
-                return "";
-        }
-    }
-
-    @Override
-    public Class getColumnClass(int columnIndex) {
-        return String.class;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-
-        JsonEntry swaggerEntry = entries.get(rowIndex);
-
-        switch (columnIndex) {
-            case 0:
-                return swaggerEntry.operationName;
-            case 1:
-                return swaggerEntry.path;
-            case 2:
-                return swaggerEntry.endpoints;
-            default:
-                return "";
-        }
-    }
-
-    @Override
-    public boolean isCellEditable(int row, int col) {
-        return col >= 2;
-    }
-
-    @Override
     public byte[] getRequest() {
         return currentlyDisplayedItem.getRequest();
     }
@@ -168,40 +110,6 @@ public class JsonTab extends AbstractTableModel implements IMessageEditorControl
     @Override
     public IHttpService getHttpService() {
         return currentlyDisplayedItem.getHttpService();
-    }
-
-    /**
-     * Table previously displaying the list of swagger endpoints
-     *
-     * @deprecated
-     */
-    private class JsonTable extends JTable {
-
-        public JsonTable(TableModel tableModel) {
-            super(tableModel);
-        }
-
-        @Override
-        public void changeSelection(int row, int col, boolean toggle, boolean extend) {
-
-            JsonEntry swaggerEntry = entries.get(super.convertRowIndexToModel(row));
-            requestViewer.setMessage(swaggerEntry.request, true);
-            currentlyDisplayedItem = swaggerEntry.requestResponse;
-            super.changeSelection(row, col, toggle, extend);
-        }
-
-        private boolean painted;
-
-        @Override
-        public void paint(Graphics g) {
-            super.paint(g);
-
-            if (!painted) {
-                painted = true;
-                splitPane.setResizeWeight(.30);
-                splitPane.setDividerLocation(0.30);
-            }
-        }
     }
 
 }

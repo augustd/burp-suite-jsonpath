@@ -1,6 +1,5 @@
 package burp;
 
-import com.codemagi.burp.Utils;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.internal.JsonFormatter;
@@ -10,32 +9,30 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
-import java.util.Set;
 import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- *
- * @author adetlefsen
+ * Component that provides the UI for JSONPath queries and displaying results. 
+ * 
+ * @author August Detlefsen
  */
 public class JsonPathPanel extends javax.swing.JPanel {
 
-    private String json;
-    private DocumentContext context;
+    private final String json;
+    private final DocumentContext context;
 
     /**
-     * Creates new form JsonPathPanel
+     * Creates new JsonPathPanel
      */
     public JsonPathPanel(String json) {
         this.json = json;
         context = JsonPath.parse(json);
         initComponents();
-        BurpExtender.getCallbacks().customizeUiComponent(this);
-
+        
         //add a listener to the domains list
         resultList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -48,6 +45,8 @@ public class JsonPathPanel extends javax.swing.JPanel {
                 }
             }
         });
+        
+        customizeUI();
     }
 
     /**
@@ -232,6 +231,10 @@ public class JsonPathPanel extends javax.swing.JPanel {
         //hide the status message after a delay
         Timer timer = new Timer();
         timer.schedule(new CloseDialogTask(), 1500);
+    }
+
+    private void customizeUI() {
+        BurpExtender.getCallbacks().customizeUiComponent(this);
     }
 
     class CloseDialogTask extends TimerTask {

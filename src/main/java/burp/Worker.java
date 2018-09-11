@@ -8,16 +8,17 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 
 /**
- *
- * @author adetlefsen
+ * SwingWorker instance to allow JSON t be parsed in the background. 
+ * 
+ * @author August Detlefsen
  */
 class Worker extends SwingWorker<Void, Void> {
 
-    private JDialog dialog = new JDialog();
-    private Parser parser;
-    private IContextMenuInvocation invocation;
-    private JsonParserTab tab;
-    private IBurpExtenderCallbacks callbacks;
+    private final JDialog dialog = new JDialog();
+    private final Parser parser;
+    private final IContextMenuInvocation invocation;
+    private final JsonParserTab tab;
+    private final IBurpExtenderCallbacks callbacks;
     private int status;
 
     public Worker(Parser parser, IContextMenuInvocation invocation, JsonParserTab tab, IBurpExtenderCallbacks callbacks) {
@@ -38,27 +39,25 @@ class Worker extends SwingWorker<Void, Void> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        status = parser.parseSwagger(invocation.getSelectedMessages()[0], callbacks);
+        status = parser.parseJson(invocation.getSelectedMessages()[0], callbacks);
         return null;
     }
 
     @Override
     protected void done() {
         dialog.dispose();
-        if (status != -1 && status != -2 && status != -3) {
-            {
-                final JTabbedPane parent = (JTabbedPane) tab.getUiComponent().getParent();
-                final int index = parent.indexOfComponent(tab.getUiComponent());
-                parent.setBackgroundAt(index, new Color(229, 137, 1));
+        if (status >= 0) {
+            final JTabbedPane parent = (JTabbedPane) tab.getUiComponent().getParent();
+            final int index = parent.indexOfComponent(tab.getUiComponent());
+            parent.setBackgroundAt(index, new Color(229, 137, 1));
 
-                Menu.timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        parent.setBackgroundAt(index, new Color(0, 0, 0));
-                    }
-                }, 5000);
+            Menu.timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    parent.setBackgroundAt(index, new Color(0, 0, 0));
+                }
+            }, 5000);
 
-            }
         }
     }
 }
