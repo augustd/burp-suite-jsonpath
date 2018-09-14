@@ -45,8 +45,6 @@ public class JsonTab implements IMessageEditorController {
         splitPane.setRightComponent(jsonPathPanel);
 
         tabbedPane.add(request, splitPane);
-        tabbedPane.setTabComponentAt(JsonParserTab.tabCount - JsonParserTab.removedTabCount, new ButtonTabComponent(tabbedPane));
-
     }
     
     class JsonListSelectionListener implements ListSelectionListener {

@@ -3,6 +3,9 @@ package burp;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,47 +14,53 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
- * Component to be used as tabComponent; Contains a JLabel to show the text and a JButton to close the tab it belongs to
+ * Component to be used as tabComponent; Contains a JLabel to show the text and
+ * a JButton to close the tab it belongs to
  */
-public class ButtonTabComponent extends JPanel {
+public class BurpTabComponent extends JPanel {
 
     private final JTabbedPane pane;
+    private final JTextField editor = new JTextField();
+    private static final Color TRANSPARENT = new Color(255, 255, 255, 0);
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    public BurpTabComponent(String title, final JTabbedPane pane) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
         this.pane = pane;
-        setOpaque(false);
 
-        //make JLabel read titles from JTabbedPane
-        JLabel label = new JLabel() {
-            @Override
-            public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-                if (i != -1) {
-                    return pane.getTitleAt(i);
-                }
-                return null;
-            }
-        };
+        //create an editor component
+        editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 7));
+        editor.setText(title);
+        editor.setBackground(TRANSPARENT);
+        editor.setOpaque(false);
+        editor.setEditable(false);
+        BurpExtender.getCallbacks().customizeUiComponent(editor);
+        add(editor);
 
-        add(label);
-        //add more space between the label and the button
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-        //tab button
+        //Make editor not editable until double-click
+        editor.setEditable(false);
+        editor.setEnabled(false);
+        editor.setDisabledTextColor(Color.BLACK);
+        editor.addMouseListener(DOUBLE_CLICK_LISTENER);
+        editor.addFocusListener(FOCUS_LOST_LISTENER);
+
+        //Add the close button
         JButton button = new TabButton();
         add(button);
+
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+        setBackground(TRANSPARENT);
+        setOpaque(false);
     }
 
     private class TabButton extends JButton implements ActionListener {
 
         public TabButton() {
-            int size = 17;
+            int size = 9;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("close this tab");
             //Make the button looks the same for all Laf's
@@ -60,19 +69,22 @@ public class ButtonTabComponent extends JPanel {
             setContentAreaFilled(false);
             //No need to be focusable
             setFocusable(false);
-            setBorder(BorderFactory.createEtchedBorder());
+            setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             setBorderPainted(false);
+            this.setMargin(new Insets(11, 6, 0, 0));
+
             //Making nice rollover effect
             //we use the same listener for all buttons
-            addMouseListener(buttonMouseListener);
+            addMouseListener(BUTTON_MOUSE_LISTENER);
             setRolloverEnabled(true);
             //Close the proper tab by clicking the button
             addActionListener(this);
+            BurpExtender.getCallbacks().customizeUiComponent(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            int i = pane.indexOfTabComponent(BurpTabComponent.this);
             if (i != -1) {
                 pane.remove(i);
                 JsonParserTab.removedTabCount++;
@@ -93,19 +105,19 @@ public class ButtonTabComponent extends JPanel {
             if (getModel().isPressed()) {
                 g2.translate(1, 1);
             }
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(1));
+            g2.setColor(Color.GRAY);
             if (getModel().isRollover()) {
                 g2.setColor(Color.BLACK);
             }
             int delta = 6;
-            g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-            g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
+            g2.drawLine(2, 3, 6, 7);
+            g2.drawLine(2, 7, 6, 3);
             g2.dispose();
         }
     }
 
-    private final static MouseListener buttonMouseListener = new MouseAdapter() {
+    private final static MouseListener BUTTON_MOUSE_LISTENER = new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
@@ -124,4 +136,31 @@ public class ButtonTabComponent extends JPanel {
             }
         }
     };
+
+    private final MouseListener DOUBLE_CLICK_LISTENER = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Component component = e.getComponent();
+            if (e.getClickCount() == 2) {
+                System.out.println("double-click");
+                JTextField field = (JTextField) component;
+                field.setEditable(true);
+                field.setEnabled(true);
+            } else {
+                pane.setSelectedIndex(pane.indexOfTabComponent(BurpTabComponent.this));
+            }
+        }
+    };
+
+    private static final FocusListener FOCUS_LOST_LISTENER = new FocusAdapter() {
+        @Override
+        public void focusLost(FocusEvent e) {
+            Component component = e.getComponent();
+            System.out.println("User exited");
+            JTextField field = (JTextField) component;
+            field.setEditable(false);
+            field.setEnabled(false);
+        }
+    };
+
 }
