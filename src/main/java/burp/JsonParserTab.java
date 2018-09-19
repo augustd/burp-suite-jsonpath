@@ -50,22 +50,4 @@ public class JsonParserTab extends java.awt.Component implements ITab {
         return tabbedPane;
     }
 
-    public boolean isJsonMessage(byte[] message) {
-        for (JsonTab tab : tabs) {
-            if (tab.containsEntry(message)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String getJsonString(byte[] message) {
-        for (JsonTab tab : tabs) {
-            JsonEntry entry = tab.getEntry(message);
-            if (entry != null) {
-                return entry.json;
-            }
-        }
-        return null;
-    }
 }
