@@ -105,8 +105,8 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
             }
         });
         searchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                searchFieldKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
             }
         });
 
@@ -153,7 +153,19 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
 		}
     }//GEN-LAST:event_searchFieldFocusGained
 
-    private void searchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyTyped
+    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
+        incrementCurrentMatch(1);
+		jsonList.setSelectedIndex(searchMatches.get(currentMatch));
+		jsonList.ensureIndexIsVisible(jsonList.getSelectedIndex());
+    }//GEN-LAST:event_nextButtonMouseClicked
+
+    private void prevButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prevButtonMouseClicked
+        decrementCurrentMatch();
+		jsonList.setSelectedIndex(searchMatches.get(currentMatch));
+		jsonList.ensureIndexIsVisible(jsonList.getSelectedIndex());
+    }//GEN-LAST:event_prevButtonMouseClicked
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
         String searchText = searchField.getText();
 		Pattern searchPattern = Pattern.compile(Pattern.quote(searchText), Pattern.CASE_INSENSITIVE);
 		
@@ -169,19 +181,7 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
         }
 		if (searchMatches.size() > 0) jsonList.setSelectedIndex(searchMatches.get(currentMatch));
 		matchesLabel.setText(searchMatches.size() + " matches");
-    }//GEN-LAST:event_searchFieldKeyTyped
-
-    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-        incrementCurrentMatch(1);
-		jsonList.setSelectedIndex(searchMatches.get(currentMatch));
-		jsonList.ensureIndexIsVisible(jsonList.getSelectedIndex());
-    }//GEN-LAST:event_nextButtonMouseClicked
-
-    private void prevButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prevButtonMouseClicked
-        decrementCurrentMatch();
-		jsonList.setSelectedIndex(searchMatches.get(currentMatch));
-		jsonList.ensureIndexIsVisible(jsonList.getSelectedIndex());
-    }//GEN-LAST:event_prevButtonMouseClicked
+    }//GEN-LAST:event_searchFieldKeyReleased
 
 	private void incrementCurrentMatch(int amount) {
 		currentMatch += amount; 
