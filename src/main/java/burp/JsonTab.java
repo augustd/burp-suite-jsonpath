@@ -8,14 +8,11 @@ import javax.swing.*;
  * 
  * @author August Detlefsen
  */
-public class JsonTab {
+public class JsonTab extends JSplitPane {
 
-    JSplitPane splitPane;
-    JTabbedPane tabbedPane;
-
-    public JsonTab(JTabbedPane tabbedPane, String request, JsonEntry entry) {
-        this.tabbedPane = tabbedPane;
-
+    public JsonTab(String tabName, JsonEntry entry) {
+		super(JSplitPane.HORIZONTAL_SPLIT);
+		
         //the right hand side displays the JSON Path panel
         JsonPathPanel jsonPathPanel = new JsonPathPanel(entry.json);
 
@@ -23,12 +20,9 @@ public class JsonTab {
 		JsonDisplayPanel jsonPane = new JsonDisplayPanel(entry, jsonPathPanel);
 
         //create the main left/right pane 
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setLeftComponent(jsonPane);
-        splitPane.setRightComponent(jsonPathPanel);
-		splitPane.setDividerLocation(.5);
-
-        tabbedPane.add(request, splitPane);
+		setLeftComponent(jsonPane);
+		setRightComponent(jsonPathPanel);
+		setDividerLocation(.5);
     }
 
 }

@@ -15,8 +15,6 @@ public class JsonParserTab extends java.awt.Component implements ITab {
 
     JTabbedPane tabbedPane;
     private final IBurpExtenderCallbacks callbacks;
-    static int tabCount = 0;
-    static int removedTabCount = 0;
     private final java.util.List<JsonTab> tabs = new ArrayList<>();
 
     public JsonParserTab(final IBurpExtenderCallbacks callbacks) {
@@ -29,13 +27,11 @@ public class JsonParserTab extends java.awt.Component implements ITab {
         callbacks.addSuiteTab(JsonParserTab.this);
     }
 
-    public JsonTab createTab(String request, JsonEntry entry) {
+    public JsonTab createTab(String tabName, JsonEntry entry) {
 
-        JsonTab jsonTab = new JsonTab(tabbedPane, request, entry);
-        tabbedPane.setSelectedIndex(tabCount - removedTabCount);
-        tabCount++;
-
-        tabs.add(jsonTab);
+        JsonTab jsonTab = new JsonTab(tabName, entry);
+		tabbedPane.add(tabName, jsonTab);
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfComponent(jsonTab)); 
 
         return jsonTab;
     }

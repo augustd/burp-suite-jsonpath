@@ -14,12 +14,13 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
- * Component to be used as tabComponent; Contains a JLabel to show the text and
- * a JButton to close the tab it belongs to
+ * Component to be used as tabComponent: Renders instead of a default tab name.  
+ * 
+ * Contains a JLabel to show the (editable) tab name and a JButton to close the tab
  */
 public class BurpTabComponent extends JPanel {
 
-    private final JTabbedPane pane;
+    private final JTabbedPane pane; //the pane of tabs that will contain this one
     private final JTextField editor = new JTextField();
     private static final Color TRANSPARENT = new Color(255, 255, 255, 0);
 
@@ -87,7 +88,6 @@ public class BurpTabComponent extends JPanel {
             int i = pane.indexOfTabComponent(BurpTabComponent.this);
             if (i != -1) {
                 pane.remove(i);
-                JsonParserTab.removedTabCount++;
             }
         }
 
@@ -117,6 +117,9 @@ public class BurpTabComponent extends JPanel {
         }
     }
 
+	/**
+	 * Create rollover effect for X button
+	 */
     private final static MouseListener BUTTON_MOUSE_LISTENER = new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -141,17 +144,23 @@ public class BurpTabComponent extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             Component component = e.getComponent();
+			component.requestFocusInWindow();
+			if (e.getClickCount() >= 1) {
+				System.out.println("single-click");
+				pane.setSelectedIndex(pane.indexOfTabComponent(BurpTabComponent.this));
+			}
             if (e.getClickCount() == 2) {
                 System.out.println("double-click");
                 JTextField field = (JTextField) component;
                 field.setEditable(true);
                 field.setEnabled(true);
-            } else {
-                pane.setSelectedIndex(pane.indexOfTabComponent(BurpTabComponent.this));
-            }
+            } 
         }
     };
 
+	/**
+	 * Make label field un-editable when it loses focus
+	 */
     private static final FocusListener FOCUS_LOST_LISTENER = new FocusAdapter() {
         @Override
         public void focusLost(FocusEvent e) {
