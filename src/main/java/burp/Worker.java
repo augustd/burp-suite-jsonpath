@@ -8,7 +8,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 
 /**
- * SwingWorker instance to allow JSON t be parsed in the background. 
+ * SwingWorker instance to allow JSON to be parsed in the background. 
  * 
  * @author August Detlefsen
  */
@@ -18,11 +18,15 @@ class Worker extends SwingWorker<Void, Void> {
     private final Parser parser;
     private final IContextMenuInvocation invocation;
     private final JsonParserTab tab;
-    private final IBurpExtenderCallbacks callbacks;
     private int status;
 
-    public Worker(Parser parser, IContextMenuInvocation invocation, JsonParserTab tab, IBurpExtenderCallbacks callbacks) {
-        JProgressBar progressBar = new JProgressBar();
+    public Worker(Parser parser, IContextMenuInvocation invocation) {
+        this.tab = BurpExtender.getInstance().getParserTab();
+        this.parser = parser;
+        this.invocation = invocation;
+        
+		//pop a GUI progress bar
+		JProgressBar progressBar = new JProgressBar();
         progressBar.setString("Parsing JSON");
         progressBar.setStringPainted(true);
         progressBar.setIndeterminate(true);
@@ -31,15 +35,11 @@ class Worker extends SwingWorker<Void, Void> {
         dialog.setLocationRelativeTo(tab.getUiComponent().getParent());
         dialog.setModal(false);
         dialog.setVisible(true);
-        this.parser = parser;
-        this.invocation = invocation;
-        this.tab = tab;
-        this.callbacks = callbacks;
     }
 
     @Override
     protected Void doInBackground() throws Exception {
-        status = parser.parseJson(invocation.getSelectedMessages()[0], callbacks);
+        status = parser.parseJson();
         return null;
     }
 
