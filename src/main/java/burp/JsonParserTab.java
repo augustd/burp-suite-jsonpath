@@ -1,5 +1,6 @@
 package burp;
 
+import com.codemagi.burp.ui.BurpTabbedPane;
 import java.awt.*;
 import java.util.ArrayList;
 
