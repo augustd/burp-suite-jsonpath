@@ -24,6 +24,10 @@ public class Worker extends SwingWorker<Void, Void> {
     private final JsonParserTab tab;
     private int status;
 
+	public Worker(Parser parser) {
+		this(parser, null);
+	}
+	
     public Worker(Parser parser, IContextMenuInvocation invocation) {
         this.tab = BurpExtender.getInstance().getParserTab();
         this.parser = parser;

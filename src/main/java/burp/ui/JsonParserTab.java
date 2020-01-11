@@ -25,7 +25,7 @@ public class JsonParserTab extends java.awt.Component implements ITab {
         this.callbacks = callbacks;
 
         tabbedPane = new BurpTabbedPane();
-		tabbedPane.addTab("...", new JPanel());
+		tabbedPane.addTab("...", new ArbitraryJsonPanel());
 
         callbacks.customizeUiComponent(tabbedPane);
 
@@ -50,5 +50,9 @@ public class JsonParserTab extends java.awt.Component implements ITab {
     public Component getUiComponent() {
         return tabbedPane;
     }
+	
+	public int getTabCount() {
+		return tabbedPane.getTabCount();
+	}
 
 }
