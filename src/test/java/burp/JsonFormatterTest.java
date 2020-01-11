@@ -58,17 +58,17 @@ public class JsonFormatterTest {
 
         //visual sanity check
         for (PathTuple path : lines) {
-            System.out.println(path.line);
+            System.out.println(path.getLine());
         }
 
         assertEquals(10, lines.size());
 
         PathTuple line4 = lines.get(4);
-        assertEquals("      \"id\" : \"6\",", line4.line);
-        assertEquals("$[*].id", line4.path);
+        assertEquals("      \"id\" : \"6\",", line4.getLine());
+        assertEquals("$[*].id", line4.getPath());
 
         PathTuple line9 = lines.get(9);
-        assertEquals("]", line9.line);
+        assertEquals("]", line9.getLine());
 
     }
 
@@ -77,8 +77,8 @@ public class JsonFormatterTest {
         List<PathTuple> lines = myFormatter.getLines();
 
         PathTuple line6 = lines.get(6);
-        assertEquals("      \"error\" : \"403::Restricted channel\",", line6.line);
-        assertEquals("$[*].error", line6.path);
+        assertEquals("      \"error\" : \"403::Restricted channel\",", line6.getLine());
+        assertEquals("$[*].error", line6.getPath());
     }
 
     @Test
@@ -87,17 +87,17 @@ public class JsonFormatterTest {
 
         //visual sanity check
         for (PathTuple path : lines) {
-            System.out.println(path.line);
+            System.out.println(path.getLine());
         }
 
         assertEquals(36, lines.size());
 
         PathTuple line4 = lines.get(4);
-        assertEquals("            \"category\" : \"reference\",", line4.line);
-        assertEquals("$.store.book[*].category", line4.path);
+        assertEquals("            \"category\" : \"reference\",", line4.getLine());
+        assertEquals("$.store.book[*].category", line4.getPath());
 
         PathTuple line35 = lines.get(35);
-        assertEquals("}", line35.line);
+        assertEquals("}", line35.getLine());
 
     }
 

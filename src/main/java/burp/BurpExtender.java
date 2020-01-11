@@ -1,5 +1,6 @@
 package burp;
 
+import burp.ui.JsonParserTab;
 import com.codemagi.burp.BaseExtender;
 
 /**

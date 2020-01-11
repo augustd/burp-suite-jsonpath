@@ -31,15 +31,23 @@ public class JsonFormatter {
         this.formattedJson = parse(json);
     }
 
-    class PathTuple {
+    public class PathTuple {
 
-        String line;
-        String path;
+        private String line;
+        private String path;
 
         public PathTuple(String line, String path) {
             this.line = line;
             this.path = path;
         }
+
+		public String getLine() {
+			return line;
+		}
+
+		public String getPath() {
+			return path;
+		}
 
         @Override
         public String toString() {

@@ -1,5 +1,9 @@
-package burp;
+package burp.ui;
 
+import burp.BurpExtender;
+import burp.IContextMenuInvocation;
+import burp.Menu;
+import burp.Parser;
 import java.awt.Color;
 import java.util.TimerTask;
 import javax.swing.JDialog;
@@ -12,7 +16,7 @@ import javax.swing.SwingWorker;
  * 
  * @author August Detlefsen
  */
-class Worker extends SwingWorker<Void, Void> {
+public class Worker extends SwingWorker<Void, Void> {
 
     private final JDialog dialog = new JDialog();
     private final Parser parser;

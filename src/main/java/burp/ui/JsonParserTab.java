@@ -1,5 +1,8 @@
-package burp;
+package burp.ui;
 
+import burp.IBurpExtenderCallbacks;
+import burp.ITab;
+import burp.JsonEntry;
 import com.codemagi.burp.ui.BurpTabbedPane;
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,7 +24,8 @@ public class JsonParserTab extends java.awt.Component implements ITab {
     public JsonParserTab(final IBurpExtenderCallbacks callbacks) {
         this.callbacks = callbacks;
 
-        tabbedPane = new BurpTabbedPane(); 
+        tabbedPane = new BurpTabbedPane();
+		tabbedPane.addTab("...", new JPanel());
 
         callbacks.customizeUiComponent(tabbedPane);
 

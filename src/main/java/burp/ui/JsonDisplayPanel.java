@@ -1,5 +1,9 @@
-package burp;
+package burp.ui;
 
+import burp.BurpExtender;
+import burp.IBurpExtenderCallbacks;
+import burp.JsonEntry;
+import burp.JsonFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -8,7 +12,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- *
+ * Displays the formatted JSON as a clickable list. 
+ * 
  * @author augustd
  */
 public class JsonDisplayPanel extends javax.swing.JPanel {
@@ -31,7 +36,7 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
 		initComponents();
 		
 		//create the list elements
-        for (JsonFormatter.PathTuple tuple : entry.formatter.getLines()) {
+        for (JsonFormatter.PathTuple tuple : entry.getFormatter().getLines()) {
             listModel.addElement(tuple);
         }
 		
@@ -58,7 +63,7 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
         public void valueChanged(ListSelectionEvent e) {
             JsonFormatter.PathTuple selectedValue = jsonList.getSelectedValue();
             System.out.println("Selected: " + selectedValue);
-            jsonPathPanel.setJsonPathEntry(selectedValue.path);
+            jsonPathPanel.setJsonPathEntry(selectedValue.getPath());
         }
     }
 
@@ -174,7 +179,7 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
 		currentMatch = 0;
 		int index = 0;
 		for (JsonFormatter.PathTuple tuple : java.util.Collections.list(listModel.elements())) {
-			if (searchPattern.matcher(tuple.line).find()) { 
+			if (searchPattern.matcher(tuple.getLine()).find()) { 
 				searchMatches.add(index);
 			}
 			index++;
