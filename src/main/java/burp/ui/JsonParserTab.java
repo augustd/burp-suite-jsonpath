@@ -17,7 +17,7 @@ import javax.swing.*;
  */
 public class JsonParserTab extends java.awt.Component implements ITab {
 
-    JTabbedPane tabbedPane;
+    BurpTabbedPane tabbedPane;
     private final IBurpExtenderCallbacks callbacks;
     private final java.util.List<JsonTab> tabs = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class JsonParserTab extends java.awt.Component implements ITab {
         this.callbacks = callbacks;
 
         tabbedPane = new BurpTabbedPane();
-		tabbedPane.addTab("...", new ArbitraryJsonPanel());
+		tabbedPane.addLast("...", new ArbitraryJsonPanel());
 
         callbacks.customizeUiComponent(tabbedPane);
 
