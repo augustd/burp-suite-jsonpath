@@ -1,5 +1,6 @@
-package burp;
+package burp.ui;
 
+import burp.BurpExtender;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.internal.JsonFormatter;

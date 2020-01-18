@@ -1,5 +1,7 @@
 package burp;
 
+import burp.ui.Worker;
+import burp.ui.JsonParserTab;
 import com.codemagi.burp.Utils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;

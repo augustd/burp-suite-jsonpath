@@ -1,5 +1,7 @@
 package burp;
 
+import burp.ui.JsonParserTab;
+
 /**
  * Parses JSON response and creates JSONTab. 
  * 

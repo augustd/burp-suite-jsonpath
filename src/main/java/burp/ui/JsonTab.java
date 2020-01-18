@@ -1,5 +1,8 @@
-package burp;
+package burp.ui;
 
+import burp.JsonEntry;
+import burp.ui.JsonPathPanel;
+import burp.ui.JsonDisplayPanel;
 import javax.swing.*;
 
 /**
@@ -14,7 +17,7 @@ public class JsonTab extends JSplitPane {
 		super(JSplitPane.HORIZONTAL_SPLIT);
 		
         //the right hand side displays the JSON Path panel
-        JsonPathPanel jsonPathPanel = new JsonPathPanel(entry.json);
+        JsonPathPanel jsonPathPanel = new JsonPathPanel(entry.getJson());
 
         //the left hand side displays the pretty print JSON
 		JsonDisplayPanel jsonPane = new JsonDisplayPanel(entry, jsonPathPanel);
