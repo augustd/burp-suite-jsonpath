@@ -59,39 +59,39 @@ public class Menu implements IContextMenuFactory {
 			callbacks.printOutput("actionPerformed");
 
 			//get the JSON to be parsed based on what was clicked		
-			byte[] response;
+			byte[] message;
 			boolean invocationIsResponse = true;
 			switch (invocation.getInvocationContext()) { 
 				case IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST:
 				case IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_REQUEST: 
 					//get selection from request
-					response = requestResponse[0].getRequest();
+					message = requestResponse[0].getRequest();
 					invocationIsResponse = false;
 					break;
 				
 				case IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE:
 				case IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_RESPONSE: 
 				default:
-					//get selection from response
-					response = requestResponse[0].getResponse();
+					//get selection from message
+					message = requestResponse[0].getResponse();
 			}
 			
-			if (response == null) {
-				JOptionPane.showMessageDialog(parserTab.getUiComponent().getParent(), "Can't Read Response", "Error", JOptionPane.ERROR_MESSAGE);
-				return;  //TODO Throw exception? 
+			if (message == null) {
+				JOptionPane.showMessageDialog(parserTab.getUiComponent().getParent(), "Can't Read Request/Response", "Error", JOptionPane.ERROR_MESSAGE);
+				return; 
 			}
 			
 			//if a specific selection was made, use that
 			String jsonToParse;
 			int[] selection = invocation.getSelectionBounds();
 			if (selection != null && selection[0] != selection[1]) {
-				jsonToParse = Utils.getSelection(response, selection);
+				jsonToParse = Utils.getSelection(message, selection);
 			} else {
-				//use the full request or response body 
+				//use the full request or message body 
 				if (invocationIsResponse) {
-					jsonToParse = new String(Utils.getResponseBody(response, helpers));
+					jsonToParse = new String(Utils.getResponseBody(message, helpers));
 				} else {
-					jsonToParse = new String(Utils.getRequestBody(response, helpers));
+					jsonToParse = new String(Utils.getRequestBody(message, helpers));
 				}
 			}
 			
