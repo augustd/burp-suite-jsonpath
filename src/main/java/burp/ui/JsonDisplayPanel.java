@@ -188,12 +188,15 @@ public class JsonDisplayPanel extends javax.swing.JPanel {
 		matchesLabel.setText(searchMatches.size() + " matches");
     }//GEN-LAST:event_searchFieldKeyReleased
 
+        private void incrementCurrentMatch() {
+            incrementCurrentMatch(1);
+        }
 	private void incrementCurrentMatch(int amount) {
 		currentMatch += amount; 
-		currentMatch = currentMatch % searchMatches.size();  //TODO only works for positive increment
+		currentMatch = currentMatch % searchMatches.size();  
 	}
-	private void decrementCurrentMatch() {
-		currentMatch-- ; //TODO allow for any negative increment
+        private void decrementCurrentMatch() {
+		currentMatch-- ; 
 		if (currentMatch < 0) currentMatch = searchMatches.size()-1;
 	}
 
