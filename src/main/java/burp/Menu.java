@@ -35,7 +35,7 @@ public class Menu implements IContextMenuFactory {
         //get information from the invocation
         IHttpRequestResponse[] ihrrs = invocation.getSelectedMessages();
 
-        JMenuItem item = new JMenuItem("Explore JSON");
+        JMenuItem item = new JMenuItem("JSON Query");
         item.addActionListener(new MenuItemListener(invocation));
 
         List<JMenuItem> list = new ArrayList<>();

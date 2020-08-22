@@ -4,7 +4,7 @@ import burp.ui.JsonParserTab;
 import com.codemagi.burp.BaseExtender;
 
 /**
- * JSON Explorer: A BurpSuite extension to parse JSON responses and enable searching
+ * JSON Query: A BurpSuite extension to parse JSON responses and enable searching
  * for specific elements using JSON Path expression language
  *
  * @author augustd
@@ -12,7 +12,7 @@ import com.codemagi.burp.BaseExtender;
 public class BurpExtender extends BaseExtender implements IBurpExtender {
 
     public static final String TAB_NAME = "JSON";
-    public static final String EXTENSION_NAME = "JSON Explorer";
+    public static final String EXTENSION_NAME = "JSON Query";
     private static BurpExtender instance;
     private JsonParserTab parserTab;
 
