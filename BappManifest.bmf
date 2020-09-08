@@ -1,0 +1,12 @@
+Uuid: 787fbb3cd3fe40729820a88dd4fa877c
+ExtensionType: 1
+Name: JSON Query
+RepoName: json-query
+ScreenVersion: 1.0
+SerialVersion: 1
+MinPlatformVersion: 0
+ProOnly: False
+Author: August D
+ShortDescription: View and extract data from JSON responses.
+EntryPoint: target/burp-suite-jsonpath-1.0-SNAPSHOT.jar
+BuildCommand: mvn package
