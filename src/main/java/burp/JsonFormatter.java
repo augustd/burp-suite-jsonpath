@@ -72,7 +72,7 @@ public class JsonFormatter {
     private void outdent() {
         System.out.println("outdent");
         --depth;
-        tempPath.pop();
+        if (!tempPath.isEmpty()) tempPath.pop();
     }
 
     private void appendIndent(StringBuilder sb, int count) {
