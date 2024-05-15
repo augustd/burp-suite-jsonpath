@@ -125,6 +125,9 @@ public class JsonFormatter {
             if (!next.startsWith("[") && !"".equals(next)) {
                 output.append(".");
             }
+            if (next.contains(".")) {
+                next = "['" + next + "']";
+            }
             output.append(next);
         }
         System.out.println("getPath: " + output.toString());

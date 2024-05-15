@@ -13,7 +13,7 @@ import org.junit.Test;
 public class JsonFormatterTest {
 
     public static final String TEST_JSON = "[{\"clientId\":\"jo715kl631pr9yfe1vcukvkeqedz2\",\"channel\":\"/meta/subscribe\",\"id\":\"6\",\"subscription\":\"/s/notifications/readstate\",\"error\":\"403::Restricted channel\",\"successful\":false}]";
-    public static final String TEST_BOOK_JSON = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\",\"title\":\"Sayings of the Century\",\"price\":8.95},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\",\"title\":\"Sword of Honour\",\"price\":12.99},{\"category\":\"fiction\",\"author\":\"Herman Melville\",\"title\":\"Moby Dick\",\"isbn\":\"0-553-21311-3\",\"price\":8.99},{\"category\":\"fiction\",\"author\":\"J. R. R. Tolkien\",\"title\":\"The Lord of the Rings\",\"isbn\":\"0-395-19395-8\",\"price\":22.99}],\"bicycle\":{\"color\":\"red\",\"price\":19.95}}}";
+    public static final String TEST_BOOK_JSON = "{\"store\":{\"book\":[{\"category\":\"reference\",\"author\":\"Nigel Rees\",\"author.nationality\":\"British\",\"title\":\"Sayings of the Century\",\"price\":8.95},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\",\"author.nationality\":\"British\",\"title\":\"Sword of Honour\",\"price\":12.99},{\"category\":\"fiction\",\"author\":\"Herman Melville\",\"author.nationality\":\"American\",\"title\":\"Moby Dick\",\"isbn\":\"0-553-21311-3\",\"price\":8.99},{\"category\":\"fiction\",\"author\":\"J. R. R. Tolkien\",\"author.nationality\":\"British\",\"title\":\"The Lord of the Rings\",\"isbn\":\"0-395-19395-8\",\"price\":22.99}],\"bicycle\":{\"color\":\"red\",\"price\":19.95}}}";
 
     static JsonFormatter myFormatter;
     private static JsonFormatter myBookFormatter;
@@ -90,14 +90,17 @@ public class JsonFormatterTest {
             System.out.println(path.getLine());
         }
 
-        assertEquals(36, lines.size());
+        assertEquals(40, lines.size());
 
         PathTuple line4 = lines.get(4);
         assertEquals("            \"category\" : \"reference\",", line4.getLine());
         assertEquals("$.store.book[*].category", line4.getPath());
 
-        PathTuple line35 = lines.get(35);
-        assertEquals("}", line35.getLine());
+        PathTuple line6 = lines.get(6);
+        assertEquals("$.store.book[*].['author.nationality']", line6.getPath());
+
+        PathTuple line39 = lines.get(39);
+        assertEquals("}", line39.getLine());
 
     }
 
