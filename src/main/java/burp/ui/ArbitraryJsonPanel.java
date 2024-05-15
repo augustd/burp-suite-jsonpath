@@ -80,6 +80,8 @@ public class ArbitraryJsonPanel extends javax.swing.JPanel {
 		Parser parser = new Parser(tabName, jsonToParse);
 		try {
 			new Worker(parser).execute();
+
+			jTextArea1.setText("");
 		} catch (Exception e1) {
 			BurpExtender.getInstance().printStackTrace(e1);
 		}
