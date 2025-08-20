@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Timer;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -103,7 +104,7 @@ public class Menu implements IContextMenuFactory {
 					}
 				}
 
-				JsonObject jsonObject1 = JsonParser.parseString(jsonToParse).getAsJsonObject();
+				JsonElement jsonObject1 = JsonParser.parseString(jsonToParse);
 				jsonArray.add(jsonObject1);
 			}
 
